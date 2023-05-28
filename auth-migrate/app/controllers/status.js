@@ -2,7 +2,7 @@ const Status = require('../models').Status;
 
 module.exports = {
 
-  getById(req, res) {
+  status(req, res) {
     return Status
       .findByPk(req.params.id, {
         include: [],

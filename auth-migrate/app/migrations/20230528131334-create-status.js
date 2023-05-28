@@ -9,22 +9,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id: {
-        type: Sequelize.UUID
-      },
       title: {
         type: Sequelize.STRING
       },
       body: {
         type: Sequelize.STRING
-      },
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
       },
       createdAt: {
         allowNull: false,

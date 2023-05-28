@@ -21,12 +21,12 @@ module.exports = function (app) {
 
 	//Status
 	app.get('/api/status', (req, res) => {
-		statusController.status(req, res);
+		statusController.list(req, res);
 	});
 	app.get('/api/statususer', 
 		[verifyJwtTokenController.verifyToken],
 		(req, res) => {
-			statusController.statususer(req, res);
+			statusController.listStatusUser(req, res);
 	});
 	app.get('/api/status/:id',
 		[verifyJwtTokenController.verifyToken,
@@ -38,18 +38,18 @@ module.exports = function (app) {
 		[verifyJwtTokenController.verifyToken,
 			verifyJwtTokenController.isAdmin
 		], (req, res) => {
-			statusController.status(req, res);
+			statusController.add(req, res);
 		});
 	app.put('/api/status/:id',
 		[verifyJwtTokenController.verifyToken,
 			verifyJwtTokenController.isAdmin
 		], (req, res) => {
-			statusController.status(req, res);
+			statusController.update(req, res);
 		});
 	app.delete('/api/status/:id',
 		[verifyJwtTokenController.verifyToken,
 			verifyJwtTokenController.isAdmin
 		], (req, res) => {
-			statusController.status(req, res);
+			statusController.delete(req, res);
 		});
 }

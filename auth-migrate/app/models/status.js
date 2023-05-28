@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Status.belongsToMany(models.User, {
+        through: 'user_status',
+        foreignKey: 'statusId',
+        otherKey: 'userId'
+      });
     }
   }
   Status.init({
@@ -20,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: DataTypes.STRING,
     body: DataTypes.STRING,
-    user_id: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Status',
