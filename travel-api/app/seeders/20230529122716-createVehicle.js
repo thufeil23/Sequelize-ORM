@@ -3,36 +3,34 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
-   const Vehicle_data = [
+    const vehicles_data = [
     {
-      id: 1,
-      name: "H-1",
-      capacity: "12",
-      price: ""
+      name: "H1",
+      capacity: 12,
+      price: 250000,
     },
     {
-      id: 2,
       name: "Hiace",
-      capacity: "16",
-      price: ""
+      capacity: 16,
+      price: 230000,
     },
     {
-      id: 3,
       name: "Elf",
-      capacity: "10",
-      price: ""
+      capacity: 10,
+      price: 200000,
     },
-    
-   ]
+    {
+      name: "APV",
+      capacity: 6,
+      price: 140000,
+    },
+    {
+      name: "Bus",
+      capacity: 50,
+      price: 350000,
+    }
+    ];
+    await queryInterface.bulkInsert('vehicles',vehicles_data);
   },
 
   async down (queryInterface, Sequelize) {

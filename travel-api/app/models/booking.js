@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     scheId: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Booking',
+    modelName: 'Bookings',
   });
   return Booking;
 };

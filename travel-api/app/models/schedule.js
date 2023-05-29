@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     time: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'Schedule',
+    modelName: 'Schedules',
   });
   return Schedule;
 };

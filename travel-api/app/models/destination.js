@@ -19,10 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true,
     },
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
+    price: DataTypes.INTEGER,
   }, {
     sequelize,
-    modelName: 'Destination',
+    modelName: 'Destinations',
   });
   return Destination;
 };
