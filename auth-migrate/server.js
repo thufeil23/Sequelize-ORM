@@ -33,7 +33,6 @@ app.use((req, res, next) => {
 
 require('./app/router/router.js')(app);
 
-db.sequelize.sync().then(() => {
-    // create_roles();
-    app.listen(PORT, () => console.log(`Server is listening on port ${PORT}!`))
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}!`);
 });
