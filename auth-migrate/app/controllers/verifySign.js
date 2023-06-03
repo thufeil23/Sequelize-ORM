@@ -7,57 +7,87 @@ const Op = db.Sequelize.Op;
 const config = require('../config/configRoles');
 
 module.exports = {
-	signup(req, res) {
-		return User
-			.create({
-				name: req.body.name,
-				id: req.body.id,
-				email: req.body.email,
-				password: bcrypt.hashSync(req.body.password, 8)
-			}).then(user => {
-				Role.findAll({
-					where: {
-						name: {
-							[Op.or]: req.body.roles
-						}
-					}
-				}).then(roles => {
-					user.setRoles(roles).then(() => {
-						res.status(200).send({
-							auth: true,
-							id: req.body.id,
-							message: "User registered successfully!",
-							errors: null,
-						});
-					});
-				}).catch(err => {
-					res.status(500).send({
-						auth: false,
-						message: "Error",
-						errors: err
-					});
-				});
-			}).catch(err => {
-				res.status(500).send({
-					auth: false,
-					id: req.body.id,
-					message: "Error",
-					errors: err
-				});
-			})
-	},
+	// signup(req, res) {
+	// 	return User
+	// 		.create({
+	// 			name: req.body.name,
+	// 			email: req.body.email,
+	// 			password: bcrypt.hashSync(req.body.password, 8)
+	// 		}).then(user => {
+	// 			Role.findAll({
+	// 				where: {
+	// 					name: {
+	// 						[Op.or]: req.body.roles
+	// 					}
+	// 				}
+	// 			}).then(roles => {
+	// 				user.setRoles(roles).then(() => {
+	// 					res.status(200).send({
+	// 						auth: true,
+	// 						id: user.id,
+	// 						message: "User registered successfully!",
+	// 						errors: null,
+	// 					});
+	// 				});
+	// 			}).catch(err => {
+	// 				res.status(500).send({
+	// 					auth: false,
+	// 					message: "Error",
+	// 					errors: err
+	// 				});
+	// 			});
+	// 		}).catch(err => {
+	// 			res.status(500).send({
+	// 				auth: false,
+	// 				name: req.body.name,
+	// 				message: "Error",
+	// 				errors: err
+	// 			});
+	// 		})
+	// },
 
+	signup: async(req, res) => {
+		try {
+		  const user = await User.create({
+			name: req.body.name,
+			email: req.body.email,
+			password: bcrypt.hashSync(req.body.password, 8),
+		  });
+		  const roles = await Role.findAll({
+			where: {
+			  name: {
+				[Op.or]: req.body.roles,
+			  },
+			},
+		  });
+
+		  user.setRoles(roles).then(() => {
+			res.status(200).send({
+			  auth: true,
+			  id: user.id,
+			  message: "User registered successfully!",
+			  errors: null,
+			});
+		  })
+		} catch (err) {
+		  res.status(500).send({
+			auth: false,
+			message: "Error",
+			errors: err,
+		  });
+		}
+	},
+	  
 	signin(req, res) {
 		return User
 			.findOne({
 				where: {
-					id: req.body.id
+					email: req.body.email
 				}
 			}).then(user => {
 				if (!user) {
 					return res.status(404).send({
 						auth: false,
-						id: req.body.id,
 						accessToken: null,
 						message: "Error",
 						errors: "User Not Found."
@@ -68,7 +98,6 @@ module.exports = {
 				if (!passwordIsValid) {
 					return res.status(401).send({
 						auth: false,
-						id: req.body.id,
 						accessToken: null,
 						message: "Error",
 						errors: "Invalid Password!"
@@ -83,15 +112,13 @@ module.exports = {
 
 				res.status(200).send({
 					auth: true,
-					id: req.body.id,
 					accessToken: token,
-					message: "Error",
+					message: "User logged in successfully!",
 					errors: null
 				});
 			}).catch(err => {
 				res.status(500).send({
 					auth: false,
-					id: req.body.id,
 					accessToken: null,
 					message: "Error",
 					errors: err

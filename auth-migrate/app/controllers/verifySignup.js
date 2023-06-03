@@ -6,15 +6,15 @@ module.exports = {
 	checkDuplicateUserNameOrEmail(req, res, next) {
 		User.findOne({
 			where: {
-				id: req.body.id
+				name: req.body.name
 			}
 		}).then(user => {
 			if (user) {
 				res.status(400).send({
 					auth: false,
-					id: req.body.id,
+					name: req.body.name,
 					message: "Error",
-					errors: "Id is already taken!"
+					errors: "Name is already taken!"
 				});
 				return;
 			}
@@ -27,7 +27,7 @@ module.exports = {
 				if (user) {
 					res.status(400).send({
 						auth: false,
-						id: req.body.id,
+						name: req.body.name,
 						message: "Error",
 						errors: "Email is already taken!"
 					});
@@ -44,7 +44,7 @@ module.exports = {
 		if (!roles || !Array.isArray(roles)) {
 		  res.status(400).send({
 			auth: false,
-			id: req.body.id,
+			name: req.body.name,
 			message: "Error",
 			errors: "Invalid or missing 'roles' field in the request body",
 		  });
@@ -55,13 +55,13 @@ module.exports = {
 		  if (!ROLEs.includes(roles[i].toUpperCase())) {
 			res.status(400).send({
 			  auth: false,
-			  id: req.body.id,
+			  name: req.body.name,
 			  message: "Error",
 			  errors: "Role does not exist: " + roles[i],
 			});
 			return;
-		  }
-		}
+		  };
+		};
 	  
 		next();
 	  }

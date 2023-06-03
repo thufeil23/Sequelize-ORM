@@ -54,14 +54,39 @@ module.exports = {
 						message: 'Require Admin Role',
 					});
 					return;
-				})
+				});
 			})
+			.catch(err => {
+				res.status(500).send({
+					auth: false,
+					message: "Error",
+					errors: err
+				});
+			});
 	},
 
 	isPmOrAdmin(req, res, next) {
+		if  (!req || !req.userId) {
+			return res.status(403).send({
+				auth: false,
+				message: "Error",
+				errors: "No token provided"
+			});
+		}
+
 		User.findByPk(req.userId)
 			.then(user => {
-				user.getRoles().then(roles => {
+				if (!user) {
+					return res.status(500).send({
+						auth: false,
+						message: "Error",
+						errors: "User not found"
+					});
+				}
+
+				user
+				.getRoles()
+				.then(roles => {
 					for (let i = 0; i < roles.length; i++) {
 						if (roles[i].name.toUpperCase() === "PM") {
 							next();
@@ -74,11 +99,9 @@ module.exports = {
 					}
 					res.status(403).send({
 						auth: false,
-						message: "Error",
 						message: 'Require PM/Admin Role',
 					});
-					return;
-				})
+				});
 			})
 	}
 }
