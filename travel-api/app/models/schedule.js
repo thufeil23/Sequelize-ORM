@@ -24,9 +24,28 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
-    destId: DataTypes.INTEGER,
-    vehcId: DataTypes.INTEGER,
+    destId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Destinations',
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'RESTRICT'
+    },
+    vehcId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Vehicles',
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'RESTRICT'
+    },
     time: DataTypes.DATE
   }, {
     sequelize,

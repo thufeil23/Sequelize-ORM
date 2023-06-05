@@ -11,10 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Status.belongsToMany(models.User, {
-        through: 'user_status',
-        foreignKey: 'statusId',
-        otherKey: 'userId'
+      Status.belongsTo(models.User, {
+        through: 'users',
+        foreignKey: 'user_id',
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT'
       });
     }
   }
@@ -22,6 +23,16 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'RESTRICT'
     },
     title: DataTypes.STRING,
     body: DataTypes.STRING,

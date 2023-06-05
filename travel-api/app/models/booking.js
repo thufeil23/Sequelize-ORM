@@ -23,9 +23,28 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
+      autoIncrement: true,
     },
-    userId: DataTypes.INTEGER,
-    scheId: DataTypes.INTEGER
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'RESTRICT'
+    },
+    scheId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Schedules',
+        key: 'id',
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'RESTRICT'
+    },
   }, {
     sequelize,
     modelName: 'Bookings',
