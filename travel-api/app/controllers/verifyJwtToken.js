@@ -64,44 +64,4 @@ module.exports = {
 				});
 			});
 	},
-
-	isPmOrAdmin(req, res, next) {
-		if  (!req || !req.userId) {
-			return res.status(403).send({
-				auth: false,
-				message: "Error",
-				errors: "No token provided"
-			});
-		}
-
-		User.findByPk(req.userId)
-			.then(user => {
-				if (!user) {
-					return res.status(500).send({
-						auth: false,
-						message: "Error",
-						errors: "User not found"
-					});
-				}
-
-				user
-				.getRoles()
-				.then(roles => {
-					for (let i = 0; i < roles.length; i++) {
-						if (roles[i].name.toUpperCase() === "PM") {
-							next();
-							return;
-						}
-						if (roles[i].name.toUpperCase() === "ADMIN") {
-							next();
-							return;
-						}
-					}
-					res.status(403).send({
-						auth: false,
-						message: 'Require PM/Admin Role',
-					});
-				});
-			})
-	}
 }
